@@ -20,14 +20,16 @@ class multi_task(object):
         clf = linear_model.LinearRegression()
         clf.fit(train_X, train_data)
         w_ = clf.coef_
-        print w_
+        #print w_
         score = clf.score(test_X, test_data)
         train_y = clf.predict(train_X)
 
         return train_data, test_data, train_X, W, test_X, score
 
     def create_dataS1(self, n):
-        X = np.random.normal(0, 1, (400, self.feature_dim))
+        X = np.random.normal(0, 1, (400, self.feature_dim-1))
+        x0 = np.ones((400,1))
+        X = np.hstack((X,x0))
         w = np.random.uniform(0, 10, (1, self.feature_dim))
         X = np.mat(X)
         w = np.mat(w)
