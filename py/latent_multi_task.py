@@ -9,6 +9,7 @@
 import random
 import numpy as np
 from sklearn import linear_model
+from sklearn.linear_model import Ridge
 
 class multi_task(object):
 
@@ -17,19 +18,32 @@ class multi_task(object):
 
     def simulation(self, n):
         train_data, test_data, train_X, test_X, W = self.create_dataS1(n)
-        clf = linear_model.LinearRegression()
+        # clf = linear_model.LinearRegression()
+        clf = Ridge(alpha=0.6)
         clf.fit(train_X, train_data)
         w_ = clf.coef_
-        #print w_
-        score = clf.score(test_X, test_data)
-        train_y = clf.predict(train_X)
 
-        return train_data, test_data, train_X, W, test_X, score
+        # w = self.calu_W(train_data, train_X)
+        # clf.coef_ = w.T
+
+        score = clf.score(test_X, test_data)
+        test_y = np.matrix(clf.predict(test_X))
+        # score = clf.score(train_X,train_data)
+        # print clf.coef_
+        return train_data, test_data, train_X, clf.coef_, test_X, score,test_y
+
+    def calu_W(self,data, X):
+        s1 = X.T * X
+        s2 = np.linalg.inv(s1)
+        s3 = s2 * X.T
+        W = s3 * data
+
+        return W
 
     def create_dataS1(self, n):
-        X = np.random.normal(0, 1, (400, self.feature_dim-1))
-        x0 = np.ones((400,1))
-        X = np.hstack((X,x0))
+        X = np.random.normal(0, 1, (400, self.feature_dim))
+        # x0 = np.ones((400,1))
+        # X = np.hstack((X,x0))
         w = np.random.uniform(0, 10, (1, self.feature_dim))
         X = np.mat(X)
         w = np.mat(w)
