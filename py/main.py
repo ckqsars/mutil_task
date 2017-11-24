@@ -8,11 +8,14 @@
 
 
 
-import latent_multi_task
+import latent_multi_task as lt
 import numpy as np
 from sklearn import linear_model
 from sklearn.linear_model import Ridge
+import sklearn.metrics as SM
 
+
+model = lt.multi_task(80)
 
 
 
@@ -21,18 +24,25 @@ def main():
     data_dict = {}
     sum_score = 0
     sum_nmse = 0
+    explain_var = 0
     for i in range(100):
-        model = latent_multi_task.multi_task(80)
-        train_data, test_data, train_X, w_, test_X, score,test_y = model.simulation(1)
+
+        train_data, test_data, train_X, w_, test_X, score,test_y = model.simulation(3)
         data_dict[i] = {'train_data': train_data, 'test_data':test_data,'train_X': train_X,\
                         'w_': w_, 'test_X':test_X, 'score' : score}
 
         sum_score = sum_score + score
-        sum_nmse = model.NMSE(test_data, test_y) + sum_nmse
+        # print test_y.shape
+        # print test_data.shape
+        sum_nmse = model.nmseEval(test_y,test_data) + sum_nmse
+        explain_var =   SM.explained_variance_score(test_data,test_y) + explain_var
+
     score = sum_score/100
     sum_nmse = sum_nmse/100
+    explain_var = explain_var/100
 
-    print score
+    # print explain_var
+    # print score
     print sum_nmse
     print data_dict[0]['train_data'].shape
     print data_dict[0]['train_X'].shape
@@ -45,7 +55,7 @@ def main():
     
     for t  in range(3):
         lambda_dict = {}
-
+        explain_var = 0
         for index in data_dict:
             lambda_dict[index] = {}
             w = data_dict[index]['w_']
@@ -75,7 +85,7 @@ def main():
             # print train_y.shape
             # print train_x.shape
             # clf = linear_model.LinearRegression()
-            clf = Ridge(alpha=0.6)
+            clf = Ridge(alpha=1)
             clf.fit(train_x, train_y)
             w_ = clf.coef_
             data_dict[index]['w_'] = w_
@@ -84,10 +94,13 @@ def main():
             sum_score = sum_score + score
             # if index == 0:
             #     print clf.coef_
-            sum_nmse = model.NMSE(y, test_y) + sum_nmse
+            sum_nmse = model.nmseEval(y, test_y) + sum_nmse
+            explain_var = SM.explained_variance_score(test_y,y) + explain_var
+
         sum_score = sum_score/100
-        print sum_score
+        # print sum_score
         print sum_nmse/100
+        # print explain_var/100
         # print data_dict[0]['w_']
 
 
@@ -96,11 +109,15 @@ def get_lambda(w,x,t):
     temp = np.diag(w.flat)
     # print temp
     s1 = x*temp
-    # print s1.shape
-    s2 = s1.T*s1
-    s3 = np.linalg.inv(s2)
-    lambd_value = s3*s1.T*t
 
+    lambd_value = model.training_data(s1,t,
+                                      model_name='Ridge')
+    # print lambd_value.shape
+    # # print s1.shape
+    # s2 = s1.T*s1
+    # s3 = np.linalg.inv(s2)
+    # lambd_value = s3*s1.T*t
+    # print lambd_value.shape
     return lambd_value.T
 
 def get_new_x(lambda_value,x):
