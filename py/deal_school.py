@@ -80,7 +80,26 @@ def load_school_data():
                            target=y[start:end],
                            DESCR=descr,
                            ID=id))
-    return tasks
+    m = 0
+    for i in range(len(tasks)):
+        tempX = tasks[i]['data']
+        tempY = tasks[i]['target']
+        # print tempY.shape
+        tempX = np.column_stack((tasks[i]['data'],   np.ones((tempX.shape[0],1))*(i+1)))
+        tempY = np.column_stack((tasks[i]['target'], np.ones((tempY.shape[0],1))*(i+1)))
+        # print tempY.shape
+        # if tempY.shape[0] < 50:
+        #     m = m +1
+        # if i == 0 :
+        #     X = tempX
+        #     Y = tempY
+        # else:
+        #     X = np.row_stack((X,tempX))
+        #     Y = np.row_stack((Y,tempY))
+
+    # print m
+
+    return tasks,X
 
 
 def load_school_dataset():
@@ -120,8 +139,11 @@ def load_school_dataset():
 def main():
 
     data_dict = {}
-    # x,y = load_school_dataset()
-    result = load_school_data()
+    X,Y = load_school_dataset()
+
+    result,XT = load_school_data()
+
+
     t= 0
     f = 0
     sum_nmse = 0
@@ -138,29 +160,31 @@ def main():
         # train_X, test_X, train_data, test_data = model.split_data(x, y, 0.2)
         train_X, test_X, train_data, test_data = train_test_split(x, y, test_size=0.9)
         w = model.training_data(train_X, train_data)
+        # print w.shape
         test_y = model.prediction(test_X)
         data_dict[i] = {'train_data': train_data, 'test_data':test_data,'train_X': train_X,\
                         'w_': w, 'test_X':test_X}
         sum_nmse = model.nmseEval(test_data, test_y) + sum_nmse
-        score = model.acc_score(test_data, test_X) + score
+        score = model.score(test_X, test_data) + score
         # print len(x)
     # test_data = list(np.array(test_data))
     # test_y = list(test_y)
-    print test_y.shape
+    # print test_y.shape
 
-    print sum_nmse/139
-    print score/139
-        # print sum_nmse
-        # t = t + len(school['data'])
-        # f = f + len(school['target'])
-        # print school['target']
-    print type(sum_nmse)
-    print f
+    # print sum_nmse/139
+    si_sum_nmse = sum_nmse/139
+    # print score/139
+    #     # print sum_nmse
+    #     # t = t + len(school['data'])
+    #     # f = f + len(school['target'])
+    #     # print school['target']
+    # print type(sum_nmse)
+    # print f
 
     # print x.shape
     # print y.shape
 
-    for t in range(3):
+    for t in range(1):
         lambda_dict = {}
         explain_var = 0
         for index in data_dict:
@@ -197,7 +221,7 @@ def main():
             clf.fit(train_x, train_y)
             w_ = clf.coef_
             data_dict[index]['w_'] = w_
-            score = clf.score(test_X, test_y)
+            score = model.score(test_X, test_y)
             y = np.matrix(clf.predict(test_X))
             sum_score = sum_score + score
             # if index == 0:
@@ -207,10 +231,11 @@ def main():
 
         sum_score = sum_score /139
         # print sum_score
-        print sum_nmse / 139
+        # print sum_nmse / 139
+        ml_sum_nmse = sum_nmse/139
         # print explain_var/100
         # print data_dict[0]['w_']
-
+    return si_sum_nmse, ml_sum_nmse
 
 def get_lambda(w, x, t):
     model = lt.multi_task(28)
@@ -238,4 +263,25 @@ def get_new_x(lambda_value, x):
 
 
 if __name__ == '__main__':
-    main()
+
+    st = 0
+    mt = 0
+    t = 10
+    while(t):
+        st_score,ml_score = main()
+        if st_score == inf:
+            continue
+
+        else:
+            t =t - 1
+            print t
+            print "st_score:{0},ml_score{1}".format(st_score,ml_score)
+            st = st + st_score
+            mt = mt + ml_score
+
+        break
+
+    print st/10
+    print mt/10
+
+    # main()

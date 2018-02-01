@@ -27,7 +27,7 @@ def main():
     explain_var = 0
     for i in range(100):
 
-        train_data, test_data, train_X, w_, test_X, score,test_y = model.simulation(3)
+        train_data, test_data, train_X, w_, test_X, score,test_y = model.simulation(2)
         data_dict[i] = {'train_data': train_data, 'test_data':test_data,'train_X': train_X,\
                         'w_': w_, 'test_X':test_X, 'score' : score}
 
@@ -38,22 +38,22 @@ def main():
         explain_var =   SM.explained_variance_score(test_data,test_y) + explain_var
 
     score = sum_score/100
-    sum_nmse = sum_nmse/100
+    sum_nmse_st = sum_nmse/100
     explain_var = explain_var/100
 
     # print explain_var
     # print score
-    print sum_nmse
-    print data_dict[0]['train_data'].shape
-    print data_dict[0]['train_X'].shape
-    print data_dict[0]['w_'].shape
-    print type(data_dict[0]['train_data'])
-    print data_dict[0]['w_']
-    print test_y.shape
-    print type(test_y)
+    # print sum_nmse_st
+    # print data_dict[0]['train_data'].shape
+    # print data_dict[0]['train_X'].shape
+    # print data_dict[0]['w_'].shape
+    # print type(data_dict[0]['train_data'])
+    # print data_dict[0]['w_']
+    # print test_y.shape
+    # print type(test_y)
 
     
-    for t  in range(3):
+    for t  in range(1):
         lambda_dict = {}
         explain_var = 0
         for index in data_dict:
@@ -82,8 +82,8 @@ def main():
                     temp_train_data = data_dict[index1]['train_data']
                     train_y = np.matrix(np.vstack((np.array(train_y),np.array(temp_train_data))))
 
-            # print train_y.shape
-            # print train_x.shape
+            print train_y.shape
+            print train_x.shape
             # clf = linear_model.LinearRegression()
             clf = Ridge(alpha=1)
             clf.fit(train_x, train_y)
@@ -99,10 +99,12 @@ def main():
 
         sum_score = sum_score/100
         # print sum_score
-        print sum_nmse/100
+        # print sum_nmse/100
         # print explain_var/100
         # print data_dict[0]['w_']
+    sum_nmse_mt = sum_nmse/100
 
+    return sum_nmse_st, sum_nmse_mt
 
 
 def get_lambda(w,x,t):
@@ -127,4 +129,14 @@ def get_new_x(lambda_value,x):
     return new_x
 
 if __name__ == "__main__":
-    main()
+
+    st = 0
+    mt = 0
+    t = 10
+    for _ in range(t):
+        print _
+        st_score,mt_score = main()
+        st = st + st_score
+        mt = mt + mt_score
+    print st/t
+    print mt/t

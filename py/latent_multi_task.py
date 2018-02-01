@@ -10,6 +10,7 @@ import random
 import numpy as np
 from sklearn import linear_model
 from sklearn.linear_model import Ridge
+from sklearn.metrics import mean_squared_error
 import math
 import random
 
@@ -63,6 +64,10 @@ class multi_task(object):
 
         return nmse / len(estBeta)
 
+    def score(self, X, y):
+        y_pred = self.prediction(X)
+        return 1.- np.sqrt(mean_squared_error(y[:,0], y_pred[:,0]))/(np.max(y[:,0])-np.min(y[:,0]))
+
     def nmseEval(self, predictionData,targetData):
         # print(targetData)
         # print(predictionData)
@@ -112,9 +117,10 @@ class multi_task(object):
 
         return test_y
 
-    def acc_score(self,traget,test_x):
 
-        return self.model.score(test_x,traget)
+
+
+
 
     def split_data(self,feature,target,split_ratio):
 
