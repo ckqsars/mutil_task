@@ -8,12 +8,14 @@
 
 import tensorflow as tf
 import math
+import os
 
 
 
-batch_size = 20
+batch_size = 30
 checkpoint_dir = './checkpoint'
 n_input = 28
+save_steps = 1000
 
 class model():
     def __init__(self):
@@ -81,10 +83,12 @@ class model():
 
         out =  self.pred
 
+        return out
+
 
     def train_model(self,X,Y):
         datasize = X.shape[0]
-        saver = tf.train.Saver()
+        saver = tf.train.Saver(tf.global_variables(), max_to_keep=100)
         #config = tf.ConfigProto()
         #config.gpu_options.allow_growth = True
 
@@ -92,7 +96,7 @@ class model():
         with tf.Session(config=tf.ConfigProto(device_count={'cpu':0})) as sess:
             sess.run(tf.global_variables_initializer())
             # ckpt = tf.train.latest_checkpoint()
-            STEPS = 5000
+            STEPS = 50000
 
             for i in range(STEPS):
                 start = (i * batch_size) % datasize
@@ -100,11 +104,14 @@ class model():
                 # tf.convert_to_tensor()
                 feed = {self.X: X[start:end], self.y: Y[start:end]}
                 sess.run(self.train_step, feed_dict=feed)
-                if i % 100 == 0:
-                    print sess.run(self.loss, feed_dict=feed)
+                if i % 1000 == 1:
+                    batchloss = sess.run(self.loss, feed_dict=feed)
                     # correct_prediction = tf.equal(tf.argmax(out, 1), tf.argmax(y, 1))
                     # accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-            saver.save(sess, "checkpoint/model_dis2.ckpt")
+                if i % save_steps == 1 and batchloss < 100:
+                    print batchloss
+                    saver.save(sess, os.path.join(checkpoint_dir, 'latent_model'),
+                               global_step=i)
 
     def infer(self,X):
 
@@ -113,9 +120,11 @@ class model():
         out = self.out_model()
 
         with tf.Session() as sess:
-            saver.restore(sess, 'model/model_dis2.ckpt')
-            result = sess.run(out,feed_dict={self.x:X})
-
+            sess.run(tf.global_variables_initializer())
+            saver.restore(sess, './checkpoint/latent_model-1')
+            # print X
+            result = sess.run(out,feed_dict={self.X:X})
+            print result
 
 
         return result

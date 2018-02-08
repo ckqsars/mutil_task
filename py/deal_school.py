@@ -158,7 +158,7 @@ def main():
         # x.extend(result[i]['data'])
         # y.extend(result[i]['target'])
         # train_X, test_X, train_data, test_data = model.split_data(x, y, 0.2)
-        train_X, test_X, train_data, test_data = train_test_split(x, y, test_size=0.9)
+        train_X, test_X, train_data, test_data = train_test_split(x, y, test_size=0.8)
         w = model.training_data(train_X, train_data)
         # print w.shape
         test_y = model.prediction(test_X)
@@ -171,9 +171,9 @@ def main():
     # test_y = list(test_y)
     # print test_y.shape
 
-    # print sum_nmse/139
+    print sum_nmse/139
     si_sum_nmse = sum_nmse/139
-    # print score/139
+    print score/139
     #     # print sum_nmse
     #     # t = t + len(school['data'])
     #     # f = f + len(school['target'])
