@@ -13,6 +13,7 @@ from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error
 import math
 import random
+import math
 
 class multi_task(object):
 
@@ -88,7 +89,8 @@ class multi_task(object):
         # nmse = nmse / (len(targetData) * avgTarget * avgPrediction)
         # print nmse
         # print var
-        nmse = nmse / (new_var*len(targetData))
+
+        nmse = math.sqrt(nmse) / (new_var*len(targetData))
         # print var
         # print new_var
         # print type(nmse)

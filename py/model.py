@@ -13,8 +13,8 @@ import os
 
 
 batch_size = 30
-checkpoint_dir = './checkpoint'
-n_input = 28
+checkpoint_dir = './checkpoint_1'
+n_input = 21
 save_steps = 1000
 
 class model():
@@ -121,10 +121,13 @@ class model():
 
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
-            saver.restore(sess, './checkpoint/latent_model-1')
+            if X.shape[1] == 28:
+                saver.restore(sess, './checkpoint/latent_model-1')
+            if X.shape[1] == 21:
+                saver.restore(sess, './checkpoint_1/latent_model-49001')
             # print X
             result = sess.run(out,feed_dict={self.X:X})
-            print result
+            #print result
 
 
         return result

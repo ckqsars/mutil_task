@@ -16,12 +16,14 @@ import os
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import Ridge
 import sklearn.metrics as SM
-
+import model
 inf = float('inf')
 
 cur_dir = os.path.dirname(os.path.abspath(__file__))
 path_prefix = os.path.abspath(os.path.join(cur_dir, "../"))
-
+#FNN = model.model()
+#FNN.build_model(28)
+#FNN.build_loss()
 
 
 
@@ -51,7 +53,7 @@ def load_school_data():
         corresponding to one school.
 
     """
-    matlab_file = os.path.join(path_prefix, "data/school_splits/school_b.mat")
+    matlab_file = os.path.join(path_prefix, "data/school/school_b.mat")
     mat = sio.loadmat(matlab_file)
     # extract combined X and y data
     X = mat["x"].T.astype("float")
@@ -85,6 +87,8 @@ def load_school_data():
         tempX = tasks[i]['data']
         tempY = tasks[i]['target']
         # print tempY.shape
+
+        
         tempX = np.column_stack((tasks[i]['data'],   np.ones((tempX.shape[0],1))*(i+1)))
         tempY = np.column_stack((tasks[i]['target'], np.ones((tempY.shape[0],1))*(i+1)))
         # print tempY.shape
@@ -106,7 +110,7 @@ def load_school_dataset():
     """
     Load School dataset and select the first 27 tasks  for computing reasons
     """
-    dataset = sio.loadmat('../data/school1.mat')
+    dataset = sio.loadmat('../data/school/school_b.mat')
     FEATURES_COLUMNS = ['Year_1985', 'Year_1986', 'Year_1987', 'FSM', 'VR1Percentage', 'Gender_Male', 'Gender_Female',
                         'VR_1', 'VR_2', 'VR_3',
                         'Ethnic_ESWI', 'Ethnic_African', 'Ethnic_Arabe', 'Ethnic_Bangladeshi', 'Ethnic_Carribean',
@@ -139,7 +143,7 @@ def load_school_dataset():
 def main():
 
     data_dict = {}
-    X,Y = load_school_dataset()
+    #X,Y = load_school_dataset()
 
     result,XT = load_school_data()
 
@@ -150,30 +154,34 @@ def main():
     score = 0
     x = []
     y = []
+
     for i in range(len(result)):
 
-        model = lt.multi_task(28)
+        model1 = lt.multi_task(28)
         x = result[i]['data']
         y = result[i]['target']
+        
+        #y_pred = FNN.infer(x)
+        #x = np.column_stack((x,y_pred))   
         # x.extend(result[i]['data'])
         # y.extend(result[i]['target'])
         # train_X, test_X, train_data, test_data = model.split_data(x, y, 0.2)
-        train_X, test_X, train_data, test_data = train_test_split(x, y, test_size=0.8)
-        w = model.training_data(train_X, train_data)
+        train_X, test_X, train_data, test_data = train_test_split(x, y, test_size=0.9)
+        w = model1.training_data(train_X, train_data)
         # print w.shape
-        test_y = model.prediction(test_X)
+        test_y = model1.prediction(test_X)
         data_dict[i] = {'train_data': train_data, 'test_data':test_data,'train_X': train_X,\
                         'w_': w, 'test_X':test_X}
-        sum_nmse = model.nmseEval(test_data, test_y) + sum_nmse
-        score = model.score(test_X, test_data) + score
+        sum_nmse = model1.nmseEval(test_data, test_y) + sum_nmse
+        score = model1.score(test_X, test_data) + score
         # print len(x)
     # test_data = list(np.array(test_data))
     # test_y = list(test_y)
     # print test_y.shape
 
-    print sum_nmse/139
+    #print sum_nmse/139
     si_sum_nmse = sum_nmse/139
-    print score/139
+    #print score/139
     #     # print sum_nmse
     #     # t = t + len(school['data'])
     #     # f = f + len(school['target'])
@@ -184,7 +192,7 @@ def main():
     # print x.shape
     # print y.shape
 
-    for t in range(1):
+    for t in range(20):
         lambda_dict = {}
         explain_var = 0
         for index in data_dict:
@@ -221,12 +229,12 @@ def main():
             clf.fit(train_x, train_y)
             w_ = clf.coef_
             data_dict[index]['w_'] = w_
-            score = model.score(test_X, test_y)
+            score = model1.score(test_X, test_y)
             y = np.matrix(clf.predict(test_X))
             sum_score = sum_score + score
             # if index == 0:
             #     print clf.coef_
-            sum_nmse = model.nmseEval(y, test_y) + sum_nmse
+            sum_nmse = model1.nmseEval(y, test_y) + sum_nmse
             explain_var = SM.explained_variance_score(test_y, y) + explain_var
 
         sum_score = sum_score /139
@@ -238,12 +246,12 @@ def main():
     return si_sum_nmse, ml_sum_nmse
 
 def get_lambda(w, x, t):
-    model = lt.multi_task(28)
+    model1 = lt.multi_task(28)
     temp = np.diag(w.flat)
     # print temp
     s1 = np.matrix(x) * temp
 
-    lambd_value = model.training_data(s1, t,
+    lambd_value = model1.training_data(s1, t,
                                       model_name='Ridge')
     # print lambd_value.shape
     # # print s1.shape
@@ -279,7 +287,7 @@ if __name__ == '__main__':
             st = st + st_score
             mt = mt + ml_score
 
-        break
+          
 
     print st/10
     print mt/10

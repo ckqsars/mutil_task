@@ -1,0 +1,142 @@
+/usr/local/lib/python2.7/dist-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+/home/kaiqi/mutil_task/py/latent_multi_task.py:91: RuntimeWarning: divide by zero encountered in double_scalars
+  nmse = nmse / (new_var*len(targetData))
+9
+st_score:188.320470246,ml_score1.00962344319
+8
+st_score:42.1957186491,ml_score0.945027907465
+7
+st_score:6.59591267273,ml_score0.93914939388
+6
+st_score:7.75009275626,ml_score1.02017775215
+5
+st_score:4.30768915215,ml_score0.933491550842
+4
+st_score:12.0972400395,ml_score0.971283043326
+3
+st_score:5.71262655678,ml_score0.957492615135
+2
+st_score:6.46714539631,ml_score1.17929481258
+1
+st_score:6.17847947196,ml_score1.04452289134
+0
+st_score:7.97218737059,ml_score1.00163322357
+28.7597562311
+1.00016966335
+/usr/local/lib/python2.7/dist-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+/home/kaiqi/mutil_task/py/latent_multi_task.py:91: RuntimeWarning: divide by zero encountered in double_scalars
+  nmse = nmse / (new_var*len(targetData))
+9
+st_score:331.966365622,ml_score1.04119220918
+8
+st_score:6.75206902377,ml_score1.10868825905
+7
+st_score:5.87418132908,ml_score0.948065204345
+6
+st_score:2.44727541589e+28,ml_score0.976895362828
+5
+st_score:67.3204405988,ml_score1.00715989547
+4
+st_score:16.499932519,ml_score1.11687007275
+3
+st_score:23.6789673921,ml_score0.993286285969
+2
+st_score:7.00861101649,ml_score0.942950933387
+1
+st_score:13.1484873937,ml_score1.0533694696
+0
+st_score:6.67495786303,ml_score0.965167163583
+2.44727541589e+27
+1.01536448562
+/usr/local/lib/python2.7/dist-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+/usr/local/lib/python2.7/dist-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+2018-03-18 21:52:52.549937: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-03-18 21:52:52.549977: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-03-18 21:52:52.549985: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+/home/kaiqi/mutil_task/py/latent_multi_task.py:91: RuntimeWarning: divide by zero encountered in double_scalars
+  nmse = nmse / (new_var*len(targetData))
+2018-03-18 22:02:15.499613: W tensorflow/core/framework/op_kernel.cc:1158] Not found: Key full_connect_1/biases not found in checkpoint
+2018-03-18 22:02:15.500790: W tensorflow/core/framework/op_kernel.cc:1158] Not found: Key full_connect_1/weights not found in checkpoint
+2018-03-18 22:02:15.503497: W tensorflow/core/framework/op_kernel.cc:1158] Not found: Key hidden1_1/biases not found in checkpoint
+2018-03-18 22:02:15.504663: W tensorflow/core/framework/op_kernel.cc:1158] Not found: Key hidden1_1/weights not found in checkpoint
+2018-03-18 22:02:15.507373: W tensorflow/core/framework/op_kernel.cc:1158] Not found: Key hidden2_1/biases not found in checkpoint
+2018-03-18 22:02:15.513160: W tensorflow/core/framework/op_kernel.cc:1158] Not found: Key hidden2_1/weights not found in checkpoint
+Traceback (most recent call last):
+  File "deal_school.py", line 280, in <module>
+    st_score,ml_score = main()
+  File "deal_school.py", line 165, in main
+    y_pred = FNN.infer(x)
+  File "/home/kaiqi/mutil_task/py/model.py", line 124, in infer
+    saver.restore(sess, './checkpoint/latent_model-1')
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/training/saver.py", line 1548, in restore
+    {self.saver_def.filename_tensor_name: save_path})
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/client/session.py", line 789, in run
+    run_metadata_ptr)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/client/session.py", line 997, in _run
+    feed_dict_string, options, run_metadata)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/client/session.py", line 1132, in _do_run
+    target_list, options, run_metadata)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/client/session.py", line 1152, in _do_call
+    raise type(e)(node_def, op, message)
+tensorflow.python.framework.errors_impl.NotFoundError: Key full_connect_1/biases not found in checkpoint
+	 [[Node: save_139/RestoreV2_2 = RestoreV2[dtypes=[DT_FLOAT], _device="/job:localhost/replica:0/task:0/cpu:0"](_arg_save_139/Const_0_0, save_139/RestoreV2_2/tensor_names, save_139/RestoreV2_2/shape_and_slices)]]
+
+Caused by op u'save_139/RestoreV2_2', defined at:
+  File "deal_school.py", line 280, in <module>
+    st_score,ml_score = main()
+  File "deal_school.py", line 165, in main
+    y_pred = FNN.infer(x)
+  File "/home/kaiqi/mutil_task/py/model.py", line 118, in infer
+    saver = tf.train.Saver()
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/training/saver.py", line 1139, in __init__
+    self.build()
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/training/saver.py", line 1170, in build
+    restore_sequentially=self._restore_sequentially)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/training/saver.py", line 691, in build
+    restore_sequentially, reshape)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/training/saver.py", line 407, in _AddRestoreOps
+    tensors = self.restore_op(filename_tensor, saveable, preferred_shard)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/training/saver.py", line 247, in restore_op
+    [spec.tensor.dtype])[0])
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/ops/gen_io_ops.py", line 640, in restore_v2
+    dtypes=dtypes, name=name)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/framework/op_def_library.py", line 767, in apply_op
+    op_def=op_def)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/framework/ops.py", line 2506, in create_op
+    original_op=self._default_original_op, op_def=op_def)
+  File "/usr/local/lib/python2.7/dist-packages/tensorflow/python/framework/ops.py", line 1269, in __init__
+    self._traceback = _extract_stack()
+
+NotFoundError (see above for traceback): Key full_connect_1/biases not found in checkpoint
+	 [[Node: save_139/RestoreV2_2 = RestoreV2[dtypes=[DT_FLOAT], _device="/job:localhost/replica:0/task:0/cpu:0"](_arg_save_139/Const_0_0, save_139/RestoreV2_2/tensor_names, save_139/RestoreV2_2/shape_and_slices)]]
+
+/usr/local/lib/python2.7/dist-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+/home/kaiqi/mutil_task/py/latent_multi_task.py:93: RuntimeWarning: divide by zero encountered in double_scalars
+  nmse = math.sqrt(nmse) / (new_var*len(targetData))
+9
+st_score:0.682153436908,ml_score0.0100949171141
+8
+st_score:0.337035914773,ml_score0.0104059577934
+7
+st_score:5.33067229346e+27,ml_score0.0107934441585
+6
+st_score:0.258940838118,ml_score0.0104043290825
+5
+st_score:0.169004073163,ml_score0.0106438455719
+4
+st_score:0.297882917611,ml_score0.0107911027841
+3
+st_score:0.708282320021,ml_score0.0106022120977
+2
+st_score:0.102903507574,ml_score0.0101992355625
+1
+st_score:1.42356621287,ml_score0.0106118303959
+0
+st_score:0.128940812487,ml_score0.0104261382699
+5.33067229346e+26
+0.0104973012831

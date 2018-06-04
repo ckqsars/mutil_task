@@ -12,17 +12,24 @@ def score(y_pred, y):
 
 if __name__ == "__main__":
 
-    task, N, dim = ld.random_data()
-    task, X, Y = ld.load_school_data()
+    #task, N, dim = ld.random_data()
+    #task, X, Y = ld.load_school_data()
+    
+    X,Y = ld.load_sarcos_dataset()
 
-    # mode = 'train'
-    mode = 'infer'
+    X = X[:,:-1]
+    Y = Y[:,:-1]
+    #print X,Y
+    print X.shape
+   
+    mode = 'train'
+    #mode = 'infer'
 
 
     if mode == 'train':
 
         FNN = model.model()
-        FNN.build_model(28)
+        FNN.build_model(X.shape[1])
         FNN.build_loss()
         FNN.build_training(0.0001)
         FNN.train_model(X,Y)
@@ -31,8 +38,9 @@ if __name__ == "__main__":
     if mode == 'infer':
 
         FNN =  model.model()
-        FNN.build_model(28)
+        FNN.build_model(X.shape[1])
         FNN.build_loss()
         y_pred = FNN.infer(X)
 
         print score(y_pred,Y)
+
